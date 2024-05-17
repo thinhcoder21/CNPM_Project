@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <!-- Bootstrap Icons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .login-con {
+            max-width: 100%;
+        }
+
+        .card {
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #007bff;
+            border-bottom: none;
+        }
+
+        .card-body {
+            background: #ffffff;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 0.5rem;
+            border: 1px solid #ced4da;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            border-radius: 0.5rem;
+            padding: 0.5rem 2rem;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            color: #856404;
+            border-radius: 0.5rem;
+        }
+
+        .alert-dismissible .btn-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+        }
+
+        .text-secondary {
+            color: #6c757d !important;
+        }
+
+        .input-group-text {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 0.5rem 0 0 0.5rem;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container login-con">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg">
+                    <header class="card-header text-center bg-primary text-white">
+                        <h4 class="card-title mt-2">ĐĂNG NHẬP</h4>
+                    </header>
+                    <article class="card-body">
+                        <!-- Error Message -->
+                        {% if msg != "" %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            <p class="mb-0">{{ msg }}</p>
+                        </div>
+                        {% endif %}
+                        <!-- Login Form -->
+                        <form action="" method="post">
+                            {{ form.hidden_tag() }}
+                            <div class="form-group">
+                                {{ form.userType.label(class_='form-label') }}
+                                {{ form.userType(class_='form-control') }}
+                            </div>
+                            <div class="form-group mt-3">
+                                <label class="form-label" for="username">Tên đăng nhập:</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    {{ form.username(class_='form-control') }}
+                                </div>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label class="form-label" for="password">Mật khẩu:</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    {{ form.password(class_='form-control') }}
+                                </div>
+                            </div>
+                            <div class="form-group mt-4 text-center">
+                                {{ form.submit(class_='btn btn-primary btn-block') }}
+                            </div>
+                        </form>
+                        <div class="text-center text-secondary mt-3">
+                             Hỗ trợ : 0917558807
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

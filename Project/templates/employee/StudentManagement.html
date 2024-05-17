@@ -1,0 +1,70 @@
+{% extends '/layout/base.html' %}
+{% block title %}Quản lý sinh viên{% endblock %}
+{% block content %}
+<div class="container student-management-container">
+    <div class="row bg-secondary mt-5">
+        <div class="col-md-2 bg-info p-2">
+            <h4 class="text-white">KHỐI LỚP</h4>
+            <div class="list-group">
+                <a href="/nhanvien/quan_ly_sinh_vien" class="list-group-item">TẤT CẢ</a>
+                <a href="?grade=G10" class="list-group-item">Lớp 10</a>
+                <a href="?grade=G11" class="list-group-item">Lớp 11</a>
+                <a href="?grade=G12" class="list-group-item">Lớp 12</a>
+            </div>
+        </div>
+        <div class="col-md-10 p-2">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <a href="them_hoc_sinh" class="btn btn-primary mr-2">Thêm học sinh</a>
+                    <a href="xet_len_lop" class="btn btn-success">Xét lên lớp</a>
+                </div>
+                <form method="get" class="d-flex" style="width: 50%">
+                    <input class="form-control mr-2" type="text" placeholder="Tìm kiếm sinh viên..." name="kw">
+                    <button class="btn btn-info" type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+
+            <ul class="pagination">
+                {% for t in range(tags['start'], tags['end']+1): %}
+                    <li class="page-item"><a class="page-link" onclick="setPara('page',{{t}})">{{t}}</a></li>
+                {% endfor %}
+            </ul>
+
+            <div id="student_list mt-3">
+                {% if stuList: %}
+                    <ul class="list-group">
+                        {% for s in stuList: %}
+                            <a href="/user/{{s.user_id}}" class="text-decoration-none">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <span class="mr-2">{{s.user_id}}</span>
+                                        <img src="{{s.student_info.image}}" class="rounded-circle" style="width: 50px;">
+                                        <span class="ml-2">{{s.student_info.name}}</span>
+                                    </div>
+                                    <div class="d-flex">
+                                        <span class="mr-2">Khối {{s.grade.value}}</span>
+                                        <span class="mr-2">Kì {{s.semester_id}}</span>
+                                        <span class="mr-2">{{"Nam" if s.student_info.gender == 1 else "Nữ" }}</span>
+                                        {% if s.active: %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Banned</span>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            </a>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="text-center mt-5">
+                        <h1>KHÔNG CÓ HỌC SINH</h1>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+    <script src="{{url_for('static', filename = 'js/menu.js')}}"></script>
+{% endblock %}

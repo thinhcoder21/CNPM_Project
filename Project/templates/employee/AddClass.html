@@ -1,0 +1,37 @@
+{% extends 'layout/base.html' %}
+{% block title %}Tạo lớp học - MANAGEMENT STUDENT{% endblock %}
+{% block content %}
+
+{% if msg is not none %}
+    <div class="alert alert-success">
+      <strong>{{ msg['status'] }}!</strong> {{ msg['message'] }}
+    </div>
+{% endif %}
+
+<div class="label"></div>
+<form action="" method="POST" class="m-5">
+    <label for="grade">Khối lớp</label>
+    <select name="grade" id="grade" onchange="get_non_class_user_by_grade()">
+        <option value="NULL">...</option>
+        {% for g in Grade %}
+        <option value="{{ g.name | e }}">Khối {{ g.value | e }}</option>
+        {% endfor %}
+    </select>
+    <label for="amount">Số lượng học sinh chưa được xếp lớp</label>
+    <input readonly type="text" id="amount" name="amount" class="w-30">
+    <button type="submit" class="btn btn-primary">Tạo lớp</button>
+</form>
+
+<section id="student_box">
+    <div class="student">
+        <h4>Danh sách học sinh chưa có lớp</h4>
+        <ul id="student_panel_get">
+            <h2 class="text-center">Vui lòng chọn khối lớp</h2>
+        </ul>
+    </div>
+</section>
+
+{% endblock %}
+{% block script %}
+        <script src="{{ url_for('static', filename = 'js/employee.js') }}"></script>
+{% endblock %}

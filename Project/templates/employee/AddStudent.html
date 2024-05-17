@@ -1,0 +1,79 @@
+{% extends 'layout/base.html' %}
+{% block title %}Thêm học sinh - MANAGEMENT STUDENT{% endblock %}
+{% block content %}
+
+        <div class="container">
+            <form action="/api/user_pending" method="POST" enctype="multipart/form-data" class="student-form">
+                <div class="row">
+                    {{form.csrf_token}}
+                    <p>{{form.hidden_tag()}}</p>
+                    <div class="col-md-6 mb-3">
+                        <label for="name">{{form.name.label}} <strong class="text-danger">*</strong></label>
+                        {{form.name(class_="form-control")}}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="gender">{{form.gender.label}} <strong class="text-danger">*</strong></label>
+                        {{form.gender(class_="form-control")}}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="address">{{form.address.label}} <strong class="text-danger">*</strong></label>
+                        {{form.address(class_="form-control")}}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="birthdate">{{form.birthdate.label}} <strong class="text-danger">*</strong></label>
+                        {{form.birthdate(class_="form-control")}}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="image">{{form.image.label}}</label>
+                        {{form.image(class_="form-control")}}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="grade">{{form.grade.label}}</label>
+                        {{form.grade(class_="form-control")}}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email">{{form.email.label}}</label>
+                        {{form.email(class_="form-control")}}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="phone">{{form.phone.label}}</label>
+                        {{form.phone(class_="form-control")}}
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">Thêm học sinh</button>
+                    </div>
+                </div>
+            </form>
+
+            <button class="btn btn-success mt-4" onclick="validate_all(this)">Lưu tất cả học sinh</button>
+            <h4 class="badge bg-info m-3">Danh sách user đang chờ: </h4>
+            <div id="result">
+                {% if msg['status'] == 'failed' %}
+                    <div class="alert alert-danger"><strong>{{msg['status']}}</strong> {{msg['message']}}</div>
+                {% else %}
+                    <div class="alert alert-success"><strong>{{msg['status']}}</strong> {{msg['message']}}</div>
+                {% endif %}
+            </div>
+            <ul class="list-group" id="student_list">
+                {% for i in range(amount) %}
+                <li class="list-group-item d-flex justify-content-between align-items-center" id="{{users_pending[i]['id']}}">
+                    <img src="{{users_pending[i]['image']}}" class="rounded-circle" style="width: 15%">
+                    <div style="width: 10%">{{users_pending[i]['name']}}</div>
+                    <div style="width: 5%">{{"Nam" if users_pending[i]['gender'] == 1 else "Nữ"}}</div>
+                    <div style="width: 10%">{{users_pending[i]['birthdate']}}</div>
+                    <div style="width: 10%">{{users_pending[i]['address']}}</div>
+                    <div style="width: 20%">
+                        <strong>Email: </strong>{{users_pending[i]['email']}}
+                        <div><strong>SĐT: </strong>{{users_pending[i]['phone']}}</div>
+                    </div>
+                    <button class="btn btn-success" onclick="validate('{{users_pending[i]['id']}}', this)">Validate</button>
+                    <button class="btn btn-danger" onclick="delete_from_list({{users_pending[i]['id']}}, this)">X</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+{% endblock %}
+{% block script %}
+    <script src="{{ url_for('static', filename='js/employee.js') }}"></script>
+{% endblock %}

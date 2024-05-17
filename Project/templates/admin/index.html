@@ -1,0 +1,102 @@
+{% extends admin_base_template %}
+
+{% block head %}
+    <style>
+        /* CSS tùy chỉnh */
+        body {
+            background-color: # FFE7BA; /* Màu nền xám nhạt */
+        }
+        .card {
+            border: none; /* Loại bỏ viền của thẻ card */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiển thị bóng đổ nhẹ */
+        }
+        .card-header {
+            background-color: #007bff; /* Màu nền xanh lam cho header card */
+            color: white; /* Màu chữ trắng cho header card */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+{% if current_user.is_authenticated %}
+    <div class="container mt-5">
+        <h2 class="text-success mb-4">Chào mừng {{ current_user.name | e }}</h2>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Thống kê Người dùng
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Vai trò</th>
+                                    <th>Số lượng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for role, count in user_count %}
+                                    <tr>
+                                        <td>{{ role.value | e }}</td>
+                                        <td>{{ count | e }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        Biểu đồ Thống kê
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let data = [];
+        let labels = [];
+        {% for role, count in user_count %}
+            data.push({{ count | e }});
+            labels.push('{{ role.value | e }}');
+        {% endfor %}
+
+        window.onload = function() {
+            const ctx = document.getElementById('myChart');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '# Số lượng',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+{% else %}
+    <!-- Xem xét xử lý trường hợp khác -->
+{% endif %}
+
+{% endblock %}
